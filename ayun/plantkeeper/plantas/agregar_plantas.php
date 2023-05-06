@@ -1,6 +1,6 @@
 <?php
 include 'config_ayun.php';
-include '../web/assets/csrf_token.php';
+include '../ayun/assets/csrf_token.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && check_csrf_token($_POST['csrf_token'])) {
     $especie = $_POST['especie'];
