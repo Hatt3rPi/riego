@@ -1,5 +1,5 @@
 <?php
-include '/assets/csrf_token.php';
+include './assets/csrf_token.php';
 ?>
 
 <!DOCTYPE html>
