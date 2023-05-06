@@ -54,11 +54,8 @@
     </form>
 </div>
 <script>
-
-$(window).on("load", function() {
-    $(document).ready(function() {
         function loadPlantas() {
-            $.getJSON("/plantas/listado_plantas.php", function (data) {
+            $.getJSON("./plantas/listado_plantas.php", function (data) {
                 for (let planta of data) {
                     plantasTable.row.add([
                         planta.especie,
@@ -71,17 +68,15 @@ $(window).on("load", function() {
                 }
             });
         }
-
+        // Mostrar el formulario cuando se hace clic en el botón
+        $("#boton_agrega_plantas").on("click", function() {
+            $("#contenedor_nueva_planta").toggle();
+        });
         // Inicializar DataTable
         var plantasTable = $("#plantas-table").DataTable();
 
         // Cargar plantas desde el servidor
         loadPlantas();
-
-        // Mostrar el formulario cuando se hace clic en el botón
-        $("#boton_agrega_plantas").on("click", function() {
-            $("#contenedor_nueva_planta").toggle();
-        });
 
         $("#plantas-table tbody").on("click", ".btn-danger", function() {
             plantasTable.row($(this).parents("tr")).remove().draw();
@@ -102,7 +97,7 @@ $(window).on("load", function() {
             };
 
             // Enviar datos al servidor
-            $.post("/plantas/agregar_plantas.php", data, function (response) {
+            $.post("./plantas/agregar_plantas.php", data, function (response) {
                 console.log(response);
 
                 // Actualizar la tabla con la nueva planta
@@ -119,8 +114,6 @@ $(window).on("load", function() {
                 $("#formulario_nueva_planta")[0].reset();
             });
         });
-    });
-});
 
 
 </script>
