@@ -7,6 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-<h2>Bienvenido a Mi página de Plantkeeper</h2>
+<h2>Bienvenido a Mi página de Plantkeeper - modificada</h2>
 </body>
 </html>
