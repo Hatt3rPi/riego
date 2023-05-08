@@ -54,7 +54,7 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container_login">
         <form method="POST">
             <h1>Login</h1>
             <?php if (isset($error)) { ?>
