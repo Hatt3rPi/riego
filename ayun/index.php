@@ -1,6 +1,6 @@
 <?php
 
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION['usuario'])) {
     header("Location: .\login\login.php");
     exit();
 }
