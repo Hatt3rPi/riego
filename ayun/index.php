@@ -1,5 +1,10 @@
 <?php
 include './assets/csrf_token.php';
+
+if (!isset($_SESSION['username'])) {
+    header("Location: .\login\login.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>

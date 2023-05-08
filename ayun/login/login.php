@@ -1,5 +1,5 @@
 <?php
-// Incluir el archivo de conexión a la base de datos
+    // Incluir el archivo de conexión a la base de datos
     require_once "/home/gestio10/procedimientos_almacenados/config_ayun.php";
     
     try {
@@ -11,29 +11,39 @@
         // If connection fails, show error message and stop script
         die("ERROR: No se pudo conectar a la base de datos. " . $e->getMessage());
     }
-// Verificar si el formulario de inicio de sesión ha sido enviado
-if (isset($_POST['login'])) {
-    // Obtener el nombre de usuario y la contrasena ingresados y filtrarlos
-    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 
-    // Consulta preparada para buscar el usuario en la base de datos
-    $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE usuario = :usuario");
-    $stmt->execute(array('usuario' => $username));
-    $usuario = $stmt->fetch();
-
-    // Verificar si la contrasena es correcta utilizando password_verify()
-    if ($usuario && password_verify($password, $usuario['contrasena'])) {
-        // La contrasena es correcta, establecer la sesión
-        session_start();
-        $_SESSION['usuario'] = htmlspecialchars($usuario['usuario']);
+    // Verificar si ya hay una sesión iniciada
+    if (isset($_SESSION['usuario'])) {
+        // Si ya hay una sesión iniciada, redirigir al usuario a la página principal
         header("Location: index.php");
         exit();
-    } else {
-        // La contrasena es incorrecta, mostrar un mensaje de error
-        $error = "Nombre de usuario o contrasena incorrectos.";
     }
-}
+
+    // Verificar si el formulario de inicio de sesión ha sido enviado
+    if (isset($_POST['login'])) {
+        // Obtener el nombre de usuario y la contrasena ingresados y filtrarlos
+        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+
+        // Consulta preparada para buscar el usuario en la base de datos
+        $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE usuario = :usuario");
+        $stmt->execute(array('usuario' => $username));
+        $usuario = $stmt->fetch();
+
+        // Verificar si la contrasena es correcta utilizando password_verify()
+        if ($usuario && password_verify($password, $usuario['contrasena'])) {
+            // Iniciar sesión
+            session_start();
+            // La contrasena es correcta, establecer la sesión
+            $_SESSION['usuario'] = htmlspecialchars($usuario['usuario']);
+            
+            header("Location: ../index.php");
+            exit();
+        } else {
+            // La contrasena es incorrecta, mostrar un mensaje de error
+            $error = "Nombre de usuario o contrasena incorrectos.";
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html>
