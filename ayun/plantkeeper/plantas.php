@@ -49,7 +49,7 @@
                 <input type="text" class="form-control" id="macetero" required>
             </div>
         </div>
-        <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <button type="submit" class="btn btn-primary">Añadir planta</button>
     </form>
 </div>

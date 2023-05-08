@@ -1,8 +1,8 @@
 <?php
 include 'config_ayun.php';
-include '../ayun/assets/csrf_token.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && check_csrf_token($_POST['csrf_token'])) {
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['csrf_token']==$_SESSION['csrf_token']) {
     $especie = $_POST['especie'];
     $ubicacion = $_POST['ubicacion'];
     $humedad_min = $_POST['humedad_min'];
