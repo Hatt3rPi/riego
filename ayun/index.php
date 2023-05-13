@@ -27,6 +27,7 @@ if (!isset($_SESSION['usuario']) or !isset($_SESSION['csrf_token'])) {
     
         <!-- JS de DataTables con soporte para Bootstrap 4 -->
         <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+        <script src="https://kit.fontawesome.com/7011384382.js" crossorigin="anonymous"></script>
     </head>
 <body>
     <header>
