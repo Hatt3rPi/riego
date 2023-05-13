@@ -55,7 +55,7 @@
 </div>
 <script>
         function loadPlantas() {
-            $.getJSON("./plantas/listado_plantas.php", function (data) {
+            $.getJSON("./plantkeeper/plantas/listado_plantas.php", function (data) {
                 for (let planta of data) {
                     plantasTable.row.add([
                         planta.especie,
@@ -97,7 +97,7 @@
             };
 
             // Enviar datos al servidor
-            $.post("./plantas/agregar_plantas.php", data, function (response) {
+            $.post("./plantkeeper/plantas/agregar_plantas.php", data, function (response) {
                 console.log(response);
 
                 // Actualizar la tabla con la nueva planta
