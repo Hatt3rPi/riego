@@ -72,8 +72,8 @@ function agregarFilaATabla(planta) {
     tablaPlantas.row.add([
         planta.especie,
         planta.ubicacion,
-        planta.humedad_min + '%',
-        planta.humedad_max + '%',
+        planta.humedad_sustrato_minima + '%',
+        planta.humedad_sustrato_maxima + '%',
         planta.macetero,
         '<button class="btn btn-primary">Editar</button> <button class="btn btn-danger">Eliminar</button>'
     ]).draw();
