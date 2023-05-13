@@ -46,11 +46,21 @@ session_start();
             </div>
         </div>
         <div class="form row">
-            <div class="form-group col-md-6">
-                <label for="macetero">Macetero:</label>
-                <input type="text" class="form-control" id="macetero" required>
-            </div>
+        <div class="form-group col-md-6">
+            <label for="macetero">Macetero:</label>
+            <select class="form-control" id="macetero" required>
+                <option value="">Seleccione el tamaño del macetero</option>
+                <option value=4>4 cm</option>
+                <option value=6>6 cm</option>
+                <option value=8>8 cm</option>
+                <option value=10 selected>10 cm</option>
+                <option value=16>16 cm</option>
+                <option value=20>20 cm</option>
+                <option value=24>24 cm</option>
+            </select>
         </div>
+    </div>
+
         <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <button type="submit" class="btn btn-primary">Añadir planta</button>
     </form>
@@ -74,7 +84,7 @@ function agregarFilaATabla(planta) {
         planta.ubicacion,
         planta.humedad_sustrato_minima + '%',
         planta.humedad_sustrato_maxima + '%',
-        planta.tamano,
+        planta.tamano + 'cm',
         '<button class="btn btn-primary">Editar</button> <button class="btn btn-danger">Eliminar</button>'
     ]).draw();
 }
