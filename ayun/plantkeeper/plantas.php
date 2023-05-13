@@ -63,7 +63,7 @@
                         planta.humedad_min + '%',
                         planta.humedad_max + '%',
                         planta.macetero,
-                        '<button class="btn btn-primary">Editar</button> <button class="btn btn-danger">Eliminar</button>',
+                        '<button class="btn btn-primary">Editar</button> <button class="btn btn-danger">Eliminar</button>'
                     ]).draw();
                 }
             });
