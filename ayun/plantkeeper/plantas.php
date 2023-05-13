@@ -1,4 +1,6 @@
-
+<?php
+session_start();
+?>
 <!-- Contenido de la página plantas -->
 <h2>Lista de Plantas</h2>
 <table id="plantas-table" class="table table-striped table-bordered" style="width:100%">
