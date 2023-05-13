@@ -84,7 +84,7 @@ function agregarFilaATabla(planta) {
         planta.ubicacion,
         planta.humedad_sustrato_minima + '%',
         planta.humedad_sustrato_maxima + '%',
-        planta.tamano + 'cm',
+        planta.tamano + ' cm',
         '<button class="btn btn-primary">Editar</button> <button class="btn btn-danger">Eliminar</button>'
     ]).draw();
 }
@@ -97,17 +97,15 @@ function recolectarDatosDelFormulario() {
     return {
         especie: $("#especie").val(),
         ubicacion: $("#ubicacion").val(),
-        humedad_min: $("#humedad-min").val(),
-        humedad_max: $("#humedad-max").val(),
-        macetero: $("#macetero").val(),
+        humedad_sustrato_minima: $("#humedad-min").val(),
+        humedad_sustrato_maxima: $("#humedad-max").val(),
+        tamano: $("#macetero").val(),
         csrf_token: $("input[name='csrf_token']").val()
     };
 }
 
 function enviarFormulario(datos) {
     $.post("./plantkeeper/plantas/agregar_plantas.php", datos, function (response) {
-        console.log(datos);
-        console.log(response);
         agregarFilaATabla(datos);
         $("#formulario_nueva_planta")[0].reset();
     });
