@@ -36,11 +36,11 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="humedad-min">Humedad mínima:</label>
-                <input type="number" class="form-control" id="humedad-min" required>
+                <input type="number" class="form-control" id="humedad-min" value="20" required>
             </div>
             <div class="form-group col-md-6">
                 <label for="humedad-max">Humedad máxima:</label>
-                <input type="number" class="form-control" id="humedad-max" required>
+                <input type="number" class="form-control" id="humedad-max" value="60" required>
             </div>
         </div>
         <div class="form row">
@@ -54,66 +54,71 @@
     </form>
 </div>
 <script>
-        function loadPlantas() {
-            $.getJSON("./plantkeeper/plantas/listado_plantas.php", function (data) {
-                for (let planta of data) {
-                    plantasTable.row.add([
-                        planta.especie,
-                        planta.ubicacion, // Coma agregada aquí
-                        planta.humedad_min + '%',
-                        planta.humedad_max + '%',
-                        planta.macetero,
-                        '<button class="btn btn-primary">Editar</button> <button class="btn btn-danger">Eliminar</button>'
-                    ]).draw();
-                }
-            });
+$(document).ready(function() {
+
+var tablaPlantas = $("#plantas-table").DataTable();
+
+function cargarPlantas() {
+    $.getJSON("./plantkeeper/plantas/listado_plantas.php", function (data) {
+        for (let planta of data) {
+            agregarFilaATabla(planta);
         }
-        // Mostrar el formulario cuando se hace clic en el botón
-        $("#boton_agrega_plantas").on("click", function() {
-            $("#contenedor_nueva_planta").toggle();
-        });
-        // Inicializar DataTable
-        var plantasTable = $("#plantas-table").DataTable();
+    });
+}
 
-        // Cargar plantas desde el servidor
-        loadPlantas();
+function agregarFilaATabla(planta) {
+    tablaPlantas.row.add([
+        planta.especie,
+        planta.ubicacion,
+        planta.humedad_min + '%',
+        planta.humedad_max + '%',
+        planta.macetero,
+        '<button class="btn btn-primary">Editar</button> <button class="btn btn-danger">Eliminar</button>'
+    ]).draw();
+}
 
-        $("#plantas-table tbody").on("click", ".btn-danger", function() {
-            plantasTable.row($(this).parents("tr")).remove().draw();
-        });
+function eliminarFilaDeTabla(fila) {
+    tablaPlantas.row(fila).remove().draw();
+}
 
-        // Manejar el envío del formulario de nueva planta
-        $("#formulario_nueva_planta").on("submit", function (e) {
-            e.preventDefault();
+function recolectarDatosDelFormulario() {
+    return {
+        especie: $("#especie").val(),
+        ubicacion: $("#ubicacion").val(),
+        humedad_min: $("#humedad-min").val(),
+        humedad_max: $("#humedad-max").val(),
+        macetero: $("#macetero").val(),
+        csrf_token: $("input[name='csrf_token']").val()
+    };
+}
 
-            // Recolecta los datos del formulario
-            const data = {
-                especie: $("#especie").val(),
-                ubicacion: $("#ubicacion").val(),
-                humedad_min: $("#humedad-min").val(),
-                humedad_max: $("#humedad-max").val(),
-                macetero: $("#macetero").val(),
-                csrf_token: $("input[name='csrf_token']").val(),
-            };
+function enviarFormulario(datos) {
+    $.post("./plantkeeper/plantas/agregar_plantas.php", datos, function (response) {
+        console.log(datos);
+        console.log(response);
+        agregarFilaATabla(datos);
+        $("#formulario_nueva_planta")[0].reset();
+    });
+}
 
-            // Enviar datos al servidor
-            $.post("./plantkeeper/plantas/agregar_plantas.php", data, function (response) {
-                console.log(response);
+// Manejadores de eventos
+$("#boton_agrega_plantas").on("click", function() {
+    $("#contenedor_nueva_planta").toggle();
+});
 
-                // Actualizar la tabla con la nueva planta
-                plantasTable.row.add([
-                    data.especie,
-                    data.ubicacion,
-                    data.humedad_min + '%',
-                    data.humedad_max + '%',
-                    data.macetero,
-                    '<button class="btn btn-primary">Editar</button> <button class="btn btn-danger">Eliminar</button>',
-                ]).draw();
+$("#plantas-table tbody").on("click", ".btn-danger", function() {
+    eliminarFilaDeTabla($(this).parents("tr"));
+});
 
-                // Limpiar el formulario
-                $("#formulario_nueva_planta")[0].reset();
-            });
-        });
+$("#formulario_nueva_planta").on("submit", function (e) {
+    e.preventDefault();
+    var datos = recolectarDatosDelFormulario();
+    enviarFormulario(datos);
+});
 
+// Cargar datos desde el servidor
+cargarPlantas();
+
+});
 
 </script>
