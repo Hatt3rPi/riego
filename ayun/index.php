@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['usuario'])) {
+if (!isset($_SESSION['usuario']) or !isset($_SESSION['csrf_token'])) {
     header("Location: .\login\login.php");
     exit();
 }
