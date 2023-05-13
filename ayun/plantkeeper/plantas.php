@@ -74,7 +74,7 @@ function agregarFilaATabla(planta) {
         planta.ubicacion,
         planta.humedad_sustrato_minima + '%',
         planta.humedad_sustrato_maxima + '%',
-        planta.macetero,
+        planta.tamano,
         '<button class="btn btn-primary">Editar</button> <button class="btn btn-danger">Eliminar</button>'
     ]).draw();
 }

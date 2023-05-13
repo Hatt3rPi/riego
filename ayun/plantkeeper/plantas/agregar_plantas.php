@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['csrf_token']==$_SESSION['csr
     $humedad_max = $_POST['humedad_max'];
     $macetero = $_POST['macetero'];
 
-    $sql = "INSERT INTO plantas (especie, ubicacion, humedad_sustrato_minima, humedad_sustrato_maxima, macetero) VALUES ('?', '?', ?, ?, '?')";
+    $sql = "INSERT INTO plantas (especie, ubicacion, humedad_sustrato_minima, humedad_sustrato_maxima, tamano) VALUES ('?', '?', ?, ?, '?')";
     
     $stmt = mysqli_prepare($link, $sql);
 
