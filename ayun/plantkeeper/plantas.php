@@ -12,6 +12,7 @@ session_start();
             <th>Humedad máxima</th>
             <th>Macetero</th>
             <th>Acciones</th>
+            <th style="display: none;">id</th>
         </tr>
     </thead>
     <tbody>
@@ -85,12 +86,16 @@ function agregarFilaATabla(planta) {
         planta.humedad_sustrato_minima + '%',
         planta.humedad_sustrato_maxima + '%',
         planta.tamano + ' cm',
-        '<button class="btn btn-primary">Editar</button> <button class="btn btn-danger">Eliminar</button>'
+        '<button class="btn btn-primary">Editar</button> <button class="btn btn-danger">Eliminar</button>',
+        '<td style="display: none;">' + planta.id + '</td>'
     ]).draw();
 }
 
 function eliminarFilaDeTabla(fila) {
-    tablaPlantas.row(fila).remove().draw();
+    var id = tablaPlantas.row(fila).data()[6]; // Obtiene el valor del ID de la fila
+    $.post("./plantkeeper/plantas/modifica_plantas.php", { id: id, accion_bbdd: 'eliminacion' }, function (response) {
+        tablaPlantas.row(fila).remove().draw();
+    });
 }
 
 function recolectarDatosDelFormulario() {
@@ -100,12 +105,13 @@ function recolectarDatosDelFormulario() {
         humedad_sustrato_minima: $("#humedad-min").val(),
         humedad_sustrato_maxima: $("#humedad-max").val(),
         tamano: $("#macetero").val(),
-        csrf_token: $("input[name='csrf_token']").val()
+        csrf_token: $("input[name='csrf_token']").val(),
+        accion_bbdd: 'ingreso'
     };
 }
 
 function enviarFormulario(datos) {
-    $.post("./plantkeeper/plantas/agregar_plantas.php", datos, function (response) {
+    $.post("./plantkeeper/plantas/modifica_plantas.php", datos, function (response) {
         agregarFilaATabla(datos);
         $("#formulario_nueva_planta")[0].reset();
     });
