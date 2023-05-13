@@ -1,4 +1,5 @@
 <?php
+
 include '/home/gestio10/procedimientos_almacenados/config_ayun.php';
 header('Content-Type: application/json');
 

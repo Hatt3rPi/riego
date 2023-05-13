@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '/home/gestio10/procedimientos_almacenados/config_ayun.php';
 
 
