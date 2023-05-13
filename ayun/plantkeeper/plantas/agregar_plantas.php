@@ -1,5 +1,5 @@
 <?php
-include 'config_ayun.php';
+include '/home/gestio10/procedimientos_almacenados/config_ayun.php';
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['csrf_token']==$_SESSION['csrf_token']) {
