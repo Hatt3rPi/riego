@@ -6,7 +6,8 @@ require_once "/home/gestio10/procedimientos_almacenados/config_ayun.php";
 
 // Función para escapar valores de cadenas de caracteres
 function escape($value) {
-    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+    global $link;
+    return mysqli_real_escape_string($link, $value);
 }
 
 // Función para generar un token CSRF
@@ -21,18 +22,23 @@ if (isset($_SESSION['usuario'])) {
     // Si ya hay una sesión iniciada, redirigir al usuario a la página principal
     header("Location: ../index.php");
     exit();
+} else
+{
+    $csrfToken = generateCSRFToken();
 }
 
 // Verificar si el formulario de inicio de sesión ha sido enviado
 if (isset($_POST['login'])) {
     // Obtener el nombre de usuario y la contraseña ingresados y filtrarlos
-    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+    $username = mysqli_real_escape_string($link, $_POST['username']);
+    $password = mysqli_real_escape_string($link, $_POST['password']);
 
     // Consulta preparada para buscar el usuario en la base de datos
-    $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE usuario = :usuario");
-    $stmt->execute(array('usuario' => $username));
-    $usuario = $stmt->fetch();
+    $stmt = mysqli_prepare($link, "SELECT * FROM usuarios WHERE usuario = ?");
+    mysqli_stmt_bind_param($stmt, "s", $username);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $usuario = mysqli_fetch_assoc($result);
 
     // Verificar si la contraseña es correcta utilizando password_verify()
     if ($usuario && password_verify($password, $usuario['contrasena'])) {
