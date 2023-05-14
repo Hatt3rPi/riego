@@ -69,7 +69,16 @@ session_start();
 <script>
 $(document).ready(function() {
 
-var tablaPlantas = $("#plantas-table").DataTable();
+var tablaPlantas = $("#plantas-table").DataTable({
+    columnDefs: [
+        {
+            targets: [6], // Índice de la columna ID en base cero
+            visible: false,
+            searchable: false
+        }
+    ]
+});
+
 
 function cargarPlantas() {
     $.getJSON("./plantkeeper/plantas/listado_plantas.php", function (data) {
