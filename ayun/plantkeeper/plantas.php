@@ -85,7 +85,10 @@ $(document).ready(function() {
         { width: "14%" }, // Macetero
         { width: "10%" }, // Acciones
         { width: "9%" }  // ID (oculto)
-    ]
+    ],
+    language: {
+        url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
+    }
 });
 
 
