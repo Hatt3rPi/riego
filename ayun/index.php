@@ -33,7 +33,7 @@ if (!isset($_SESSION['usuario']) or !isset($_SESSION['csrf_token'])) {
     <header>
         <div class="logo-title-search-container">
             <div class="logo-title-container">
-                <img src="./assets/img/logo2.png" alt="Logo" class="logo"/>
+                <img src="./assets/img/logo2.png" alt="Logo" href="https://gestionipn.cl/ayun/ayun/index.php" class="logo"/>
                 <h1>Ayün Plantkeeper</h1>
             </div>
             <div class="search-container">
