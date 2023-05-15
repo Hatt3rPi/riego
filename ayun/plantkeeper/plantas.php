@@ -69,15 +69,25 @@ session_start();
 <script>
 $(document).ready(function() {
 
-var tablaPlantas = $("#plantas-table").DataTable({
+    var tablaPlantas = $("#plantas-table").DataTable({
     columnDefs: [
         {
             targets: [6], // Índice de la columna ID en base cero
             visible: false,
             searchable: false
         }
+    ],
+    columns: [
+        { width: "25%" }, // Especie
+        { width: "14%" }, // Ubicación
+        { width: "14%" }, // Humedad mínima
+        { width: "14%" }, // Humedad máxima
+        { width: "14%" }, // Macetero
+        { width: "10%" }, // Acciones
+        { width: "9%" }  // ID (oculto)
     ]
 });
+
 
 
 function cargarPlantas() {
@@ -95,7 +105,7 @@ function agregarFilaATabla(planta) {
         planta.humedad_sustrato_minima + '%',
         planta.humedad_sustrato_maxima + '%',
         planta.tamano + ' cm',
-        '<button class="btn btn-primary"><i class="fas fa-pencil-alt"></i></button> <button class="btn btn-danger"><i class="fas fa-trash"></i></button>',
+        '<button class="btn btn-outline-secondary-sm"><i class="fas fa-pencil-alt"></i></button> <button class="btn btn-outline-danger-sm"><i class="fas fa-trash"></i></button>',
         '<td style="display: none;">' + planta.id + '</td>'
     ]).draw();
 }
