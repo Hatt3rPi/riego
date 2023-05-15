@@ -28,6 +28,11 @@ if (!isset($_SESSION['usuario']) or !isset($_SESSION['csrf_token'])) {
         <!-- JS de DataTables con soporte para Bootstrap 4 -->
         <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
         <script src="https://kit.fontawesome.com/7011384382.js" crossorigin="anonymous"></script>
+
+        <!-- usados para gráficos-->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
     </head>
 <body>
     <header>
