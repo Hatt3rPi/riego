@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['csrf_token']==$_SESSION['csr
             }
             break;
         case 'eliminacion':
-            $id = intval($_POST['ubicacion']);
+            $id = intval($_POST['id']);
             $sql = "DELETE FROM plantas WHERE id = ?";
             $stmt = mysqli_prepare($link, $sql);
             if ($stmt === false) {
