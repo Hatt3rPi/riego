@@ -40,7 +40,42 @@ session_start();
       </div>
       <div class="modal-body">
         <form id="formulario_nueva_planta" class="minimalist-form">
-          <!-- El resto de tu formulario va aquí -->
+          <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="especie">Especie:</label>
+                <input type="text" class="form-control" id="especie" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="ubicacion">Ubicación:</label>
+                <input type="text" class="form-control" id="ubicacion" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="humedad-min">Humedad mínima:</label>
+                <input type="number" class="form-control" id="humedad-min" value="20" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="humedad-max">Humedad máxima:</label>
+                <input type="number" class="form-control" id="humedad-max" value="60" required>
+            </div>
+          </div>
+          <div class="form row">
+            <div class="form-group col-md-6">
+                <label for="macetero">Macetero:</label>
+                <select class="form-control" id="macetero" required>
+                    <option value="">Seleccione el tamaño del macetero</option>
+                    <option value=4>4 cm</option>
+                    <option value=6>6 cm</option>
+                    <option value=8>8 cm</option>
+                    <option value=10 selected>10 cm</option>
+                    <option value=16>16 cm</option>
+                    <option value=20>20 cm</option>
+                    <option value=24>24 cm</option>
+                </select>
+            </div>
+          </div>
+          <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
           <button type="submit" class="btn btn-primary">Añadir planta</button>
         </form>
       </div>
@@ -50,7 +85,6 @@ session_start();
     </div>
   </div>
 </div>
-
 <script>
 $(document).ready(function() {
 
@@ -63,7 +97,7 @@ $(document).ready(function() {
             }
         },
         {
-            targets: [7], // Índice de la columna ID en base cero
+            targets: [6], // Índice de la columna ID en base cero
             visible: false,
             searchable: false
         }
@@ -71,12 +105,11 @@ $(document).ready(function() {
    
     columns: [
         { width: "5%" }, // Checkbox
-        { width: "29%" }, // Especie
+        { width: "30%" }, // Especie
         { width: "14%" }, // Ubicación
-        { width: "14%" }, // Humedad mínima
-        { width: "14%" }, // Humedad máxima
-        { width: "14%" }, // Macetero
-        { width: "10%" }, // Acciones
+        { width: "17%" }, // Humedad mínima
+        { width: "17%" }, // Humedad máxima
+        { width: "17%" }, // Macetero
         { width: "0%" }  // ID (oculto)
     ],
     language: {
@@ -96,12 +129,12 @@ function cargarPlantas() {
 
 function agregarFilaATabla(planta) {
     tablaPlantas.row.add([
+        '<input type="checkbox" name="id[]" value="' + planta.id + '">',
         planta.especie,
         planta.ubicacion,
         planta.humedad_sustrato_minima + '%',
         planta.humedad_sustrato_maxima + '%',
         planta.tamano + ' cm',
-        '<button class="btn btn-outline-secondary-sm"><i class="fas fa-pencil-alt"></i></button> <button class="btn btn-outline-danger-sm"><i class="fas fa-trash"></i></button>',
         '<td style="display: none;">' + planta.id + '</td>'
     ]).draw();
 }
@@ -134,15 +167,18 @@ function enviarFormulario(datos) {
 
 // Manejadores de eventos
 
-$("#plantas-table tbody").on("click", ".btn-danger", function() {
-    eliminarFilaDeTabla($(this).parents("tr"));
+$('#delete-plant').on('click', function() {
+    // Recorre todas las filas de la tabla
+    $('#plantas-table tbody tr').each(function() {
+        // Comprueba si el checkbox de esta fila está marcado
+        if ($(this).find('input[type="checkbox"]').is(':checked')) {
+            // Si está marcado, elimina la fila
+            eliminarFilaDeTabla($(this));
+        }
+    });
 });
 $('#edit-plant').on('click', function() {
     // Código para editar la planta seleccionada
-});
-
-$('#delete-plant').on('click', function() {
-    // Código para eliminar la planta seleccionada
 });
 
 $("#formulario_nueva_planta").on("submit", function (e) {
