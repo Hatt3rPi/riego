@@ -6,9 +6,9 @@ session_start();
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <div id="buttons">
-    <button id="new-plant" class="btn btn-outline-success-sm" data-toggle="modal" data-target="#modalNuevaPlanta">Nueva Planta</button>
-    <button id="edit-plant" class="btn btn-outline-secondary-sm"><i class="fas fa-pencil-alt"></i></button>
-    <button id="delete-plant" class="btn btn-outline-danger-sm"><i class="fas fa-trash"></i></button>
+    <button id="new-plant" class="btn btn-success-sm" data-toggle="modal" data-target="#modalNuevaPlanta">Nueva Planta</button>
+    <button id="edit-plant" class="btn btn-secondary-sm"><i class="fas fa-pencil-alt"></i></button>
+    <button id="delete-plant" class="btn btn-danger-sm"><i class="fas fa-trash"></i></button>
 </div>
 
 <table id="plantas-table" class="table table-striped table-bordered" style="width:100%">
@@ -20,7 +20,6 @@ session_start();
             <th>Humedad mínima</th>
             <th>Humedad máxima</th>
             <th>Macetero</th>
-            <th>Acciones</th>
             <th style="display: none;">id</th>
         </tr>
     </thead>
@@ -141,9 +140,9 @@ function agregarFilaATabla(planta) {
 
 function eliminarFilaDeTabla(fila) {
     var id = tablaPlantas.row(fila).data()[6]; // Obtiene el valor del ID de la fila
-    $.post("./plantkeeper/plantas/modifica_plantas.php", { id: id, accion_bbdd: 'eliminacion' }, function (response) {
-        tablaPlantas.row(fila).remove().draw();
-    });
+    $.post("./plantkeeper/plantas/modifica_plantas.php", { id: id, accion_bbdd: 'eliminacion', csrf_token: $("input[name='csrf_token']").val() }, function (response) {
+    tablaPlantas.row(fila).remove().draw();
+});
 }
 
 function recolectarDatosDelFormulario() {
