@@ -6,9 +6,9 @@ session_start();
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <div id="buttons">
-    <button id="new-plant" class="btn btn-success-sm" data-toggle="modal" data-target="#modalNuevaPlanta">Nueva Planta</button>
-    <button id="edit-plant" class="btn btn-secondary-sm"><i class="fas fa-pencil-alt"></i></button>
-    <button id="delete-plant" class="btn btn-danger-sm"><i class="fas fa-trash"></i></button>
+    <button id="new-plant" class="btn btn-secondary" data-toggle="modal" data-target="#modalNuevaPlanta"><i class="fas fa-hand-holding-seedling"></i></button>
+    <button id="edit-plant" class="btn btn-secondary" disabled><i class="fas fa-pencil-alt"></i></button>
+    <button id="delete-plant" class="btn btn-danger" disabled><i class="fas fa-trash"></i></button>
 </div>
 
 <table id="plantas-table" class="table table-striped table-bordered" style="width:100%">
@@ -184,6 +184,15 @@ $("#formulario_nueva_planta").on("submit", function (e) {
     e.preventDefault();
     var datos = recolectarDatosDelFormulario();
     enviarFormulario(datos);
+});
+
+// Manejador de eventos para los checkboxes
+$("#plantas-table").on("change", "input[type='checkbox']", function() {
+    // Comprueba si hay al menos un checkbox marcado
+    var isCheckboxChecked = $("#plantas-table input[type='checkbox']:checked").length > 0;
+
+    // Activa o desactiva los botones en función de si hay un checkbox marcado
+    $("#edit-plant, #delete-plant").prop("disabled", !isCheckboxChecked);
 });
 
 // Cargar datos desde el servidor
