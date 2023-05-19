@@ -169,15 +169,24 @@ function enviarFormulario(datos) {
 // Manejadores de eventos
 
 $('#delete-plant').on('click', function() {
+    // Array para almacenar las filas que deben ser eliminadas
+    var filasParaEliminar = [];
+
     // Recorre todas las filas de la tabla
     $('#plantas-table tbody tr').each(function() {
         // Comprueba si el checkbox de esta fila está marcado
         if ($(this).find('input[type="checkbox"]').is(':checked')) {
-            // Si está marcado, elimina la fila
-            eliminarFilaDeTabla($(this));
+            // Si está marcado, añade la fila al array
+            filasParaEliminar.push($(this));
         }
     });
+
+    // Recorre el array de filas para eliminar y elimina cada fila
+    for (let fila of filasParaEliminar) {
+        eliminarFilaDeTabla(fila);
+    }
 });
+
 $('#edit-plant').on('click', function() {
     // Código para editar la planta seleccionada
 });
