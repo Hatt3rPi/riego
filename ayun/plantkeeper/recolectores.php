@@ -1,25 +1,23 @@
 <?php
 session_start();
 ?>
-<!-- Contenido de la página plantas -->
-<h2>Lista de Plantas</h2>
+<!-- Contenido de la página recolectores -->
+<h2>Lista de Recolectores</h2>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <div id="buttons">
-    <button id="new-plant" class="btn btn-secondary" data-toggle="modal" data-target="#modalNuevaPlanta"><i class="fa-solid fa-leaf"></i></button>
-    <button id="edit-plant" class="btn btn-secondary" disabled><i class="fas fa-pencil-alt"></i></button>
-    <button id="delete-plant" class="btn btn-danger" disabled><i class="fas fa-trash"></i></button>
+    <button id="new-recolector" class="btn btn-secondary" data-toggle="modal" data-target="#modalNuevarecolector"><i class="fa-solid fa-leaf"></i></button>
+    <button id="edit-recolector" class="btn btn-secondary" disabled><i class="fas fa-pencil-alt"></i></button>
+    <button id="delete-recolector" class="btn btn-danger" disabled><i class="fas fa-trash"></i></button>
 </div>
 
-<table id="plantas-table" class="table table-striped table-bordered" style="width:100%">
+<table id="recolectores-table" class="table table-striped table-bordered" style="width:100%">
     <thead>
         <tr>
             <th></th> <!-- Columna de checkbox -->
-            <th>Especie</th>
+            <th>Nombre</th>
             <th>Ubicación</th>
-            <th>Humedad mínima</th>
-            <th>Humedad máxima</th>
-            <th>Macetero</th>
+            <th>puerto</th>
             <th style="display: none;">id</th>
         </tr>
     </thead>
@@ -27,22 +25,22 @@ session_start();
     </tbody>
 </table>
 
-<!-- Añadir nueva planta -->
-<div id="modalNuevaPlanta" class="modal fade" tabindex="-1" role="dialog">
+<!-- Añadir nueva recolector -->
+<div id="modalNuevarecolector" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Añadir nueva planta</h5>
+        <h5 class="modal-title">Añadir nueva recolector</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form id="formulario_nueva_planta" class="minimalist-form">
+        <form id="formulario_nuevo_recolector" class="minimalist-form">
           <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="especie">Especie:</label>
-                <input type="text" class="form-control" id="especie" required>
+                <label for="nombre">Especie:</label>
+                <input type="text" class="form-control" id="nombre" required>
             </div>
             <div class="form-group col-md-6">
                 <label for="ubicacion">Ubicación:</label>
@@ -91,7 +89,7 @@ session_start();
             </div>
           </div>
           <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-          <button type="submit" class="btn btn-primary">Añadir planta</button>
+          <button type="submit" class="btn btn-primary">Añadir recolector</button>
         </form>
       </div>
       <div class="modal-footer">
@@ -103,7 +101,7 @@ session_start();
 <script>
 $(document).ready(function() {
 
-    var tablaPlantas = $("#plantas-table").DataTable({
+    var tablaRecolectores = $("#recolectores-table").DataTable({
     columnDefs: [
         {
             targets: 0,
@@ -112,7 +110,7 @@ $(document).ready(function() {
             }
         },
         {
-            targets: [6], // Índice de la columna ID en base cero
+            targets: [5], // Índice de la columna ID en base cero
             visible: false,
             searchable: false
         }
@@ -120,11 +118,9 @@ $(document).ready(function() {
    
     columns: [
         { width: "5%" }, // Checkbox
-        { width: "30%" }, // Especie
-        { width: "14%" }, // Ubicación
-        { width: "17%" }, // Humedad mínima
-        { width: "17%" }, // Humedad máxima
-        { width: "17%" }, // Macetero
+        { width: "40%" }, // nombre
+        { width: "30%" }, // Ubicación
+        { width: "25%" }, // puerto
         { width: "0%" }  // ID (oculto)
     ],
     language: {
@@ -134,62 +130,58 @@ $(document).ready(function() {
 
 
 
-function cargarPlantas() {
-    $.getJSON("./plantkeeper/plantas/listado_plantas.php", function (data) {
-        for (let planta of data) {
-            agregarFilaATabla(planta);
+function cargarRecolectores() {
+    $.getJSON("./plantkeeper/recolectores/listado_recolectores.php", function (data) {
+        for (let recolector of data) {
+            agregarFilaATabla(recolector);
         }
     });
 }
 
-function agregarFilaATabla(planta) {
-    tablaPlantas.row.add([
-        '<input type="checkbox" name="id[]" value="' + planta.id + '">',
-        planta.especie,
-        planta.ubicacion,
-        planta.humedad_sustrato_minima + '%',
-        planta.humedad_sustrato_maxima + '%',
-        planta.tamano + ' cm',
-        '<td style="display: none;">' + planta.id + '</td>'
+function agregarFilaATabla(recolector) {
+    tablaRecolectores.row.add([
+        '<input type="checkbox" name="id[]" value="' + recolector.id + '">',
+        recolector.nombre,
+        recolector.ubicacion,
+        recolector.puerto,
+        '<td style="display: none;">' + recolector.id + '</td>'
     ]).draw();
 }
 
 function eliminarFilaDeTabla(fila) {
-    var idHtml = tablaPlantas.row(fila).data()[6]; // Obtiene el valor del ID de la fila
+    var idHtml = tablaRecolectores.row(fila).data()[5]; // Obtiene el valor del ID de la fila
     var id = idHtml.replace(/<[^>]*>/g, ''); // Elimina las etiquetas HTML
-    $.post("./plantkeeper/plantas/modifica_plantas.php", { id: id, accion_bbdd: 'eliminacion', csrf_token: $("input[name='csrf_token']").val() }, function (response) {
-        tablaPlantas.row(fila).remove().draw();
+    $.post("./plantkeeper/recolectores/modifica_recolectores.php", { id: id, accion_bbdd: 'eliminacion', csrf_token: $("input[name='csrf_token']").val() }, function (response) {
+        tablaRecolectores.row(fila).remove().draw();
     });
 }
 
 
 function recolectarDatosDelFormulario() {
     return {
-        especie: $("#especie").val(),
+        nombre: $("#nombre").val(),
         ubicacion: $("#ubicacion").val(),
-        humedad_sustrato_minima: $("#humedad-min").val(),
-        humedad_sustrato_maxima: $("#humedad-max").val(),
-        tamano: $("#macetero").val(),
+        tamano: $("#puerto").val(),
         csrf_token: $("input[name='csrf_token']").val(),
         accion_bbdd: 'ingreso'
     };
 }
 
 function enviarFormulario(datos) {
-    $.post("./plantkeeper/plantas/modifica_plantas.php", datos, function (response) {
+    $.post("./plantkeeper/recolectores/modifica_recolectores.php", datos, function (response) {
         agregarFilaATabla(datos);
-        $("#formulario_nueva_planta")[0].reset();
+        $("#formulario_nuevo_recolector")[0].reset();
     });
 }
 
 // Manejadores de eventos
 
-$('#delete-plant').on('click', function() {
+$('#delete-recolector').on('click', function() {
     // Array para almacenar las filas que deben ser eliminadas
     var filasParaEliminar = [];
 
     // Recorre todas las filas de la tabla
-    $('#plantas-table tbody tr').each(function() {
+    $('#recolectores-table tbody tr').each(function() {
         // Comprueba si el checkbox de esta fila está marcado
         if ($(this).find('input[type="checkbox"]').is(':checked')) {
             // Si está marcado, añade la fila al array
@@ -203,27 +195,27 @@ $('#delete-plant').on('click', function() {
     }
 });
 
-$('#edit-plant').on('click', function() {
-    // Código para editar la planta seleccionada
+$('#edit-recolector').on('click', function() {
+    // Código para editar la recolector seleccionada
 });
 
-$("#formulario_nueva_planta").on("submit", function (e) {
+$("#formulario_nuevo_recolector").on("submit", function (e) {
     e.preventDefault();
     var datos = recolectarDatosDelFormulario();
     enviarFormulario(datos);
 });
 
 // Manejador de eventos para los checkboxes
-$("#plantas-table").on("change", "input[type='checkbox']", function() {
+$("#recolectores-table").on("change", "input[type='checkbox']", function() {
     // Comprueba si hay al menos un checkbox marcado
-    var isCheckboxChecked = $("#plantas-table input[type='checkbox']:checked").length > 0;
+    var isCheckboxChecked = $("#recolectores-table input[type='checkbox']:checked").length > 0;
 
     // Activa o desactiva los botones en función de si hay un checkbox marcado
-    $("#edit-plant, #delete-plant").prop("disabled", !isCheckboxChecked);
+    $("#edit-recolector, #delete-recolector").prop("disabled", !isCheckboxChecked);
 });
 
 // Cargar datos desde el servidor
-cargarPlantas();
+cargarRecolectores();
 
 });
 
