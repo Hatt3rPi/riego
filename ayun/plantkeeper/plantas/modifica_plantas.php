@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['csrf_token']==$_SESSION['csr
 
             $sql = "INSERT INTO plantas (especie, ubicacion, humedad_sustrato_minima, humedad_sustrato_maxima, tamano) VALUES (?, ?, ?, ?, ?)";
 
-            $stmt_2 = mysqli_prepare($link, $sql);
+            $stmt = mysqli_prepare($link, $sql);
             
             if ($stmt === false) {
                 echo "ERROR: No se pudo preparar la consulta SQL. " . mysqli_error($link);
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['csrf_token']==$_SESSION['csr
                 mysqli_stmt_bind_param($stmt, "ssiii", $especie, $ubicacion, $humedad_sustrato_minima, $humedad_sustrato_maxima, $tamano);
 
                 if (mysqli_stmt_execute($stmt)) {
-                    trazabilidad($link, $_SESSION['usuario'], basename(__FILE__), 'ingresa planta', 0, "INSERT INTO plantas (especie, ubicacion, humedad_sustrato_minima, humedad_sustrato_maxima, tamano) VALUES ('".$especie."', '".$ubicacion."', ". $humedad_sustrato_minima.", ".$humedad_sustrato_maxima.", ".$tamano.")") 
+                    trazabilidad($link, $_SESSION['usuario'], basename(__FILE__), 'ingresa planta', 0, "INSERT INTO plantas (especie, ubicacion, humedad_sustrato_minima, humedad_sustrato_maxima, tamano) VALUES ('".$especie."', '".$ubicacion."', ". $humedad_sustrato_minima.", ".$humedad_sustrato_maxima.", ".$tamano.")") ;
 
                 } else {
                     echo "ERROR: No se pudo ejecutar la consulta. " . mysqli_error($link);
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['csrf_token']==$_SESSION['csr
             
             $id = $_POST['id'];
             $sql = "DELETE FROM plantas WHERE id = ?";
-            trazabilidad($link, $_SESSION['usuario'], basename(__FILE__), 'elimina planta', $id, $sql.$id)
+            trazabilidad($link, $_SESSION['usuario'], basename(__FILE__), 'elimina planta', $id, $sql.$id);
             $stmt = mysqli_prepare($link, $sql);
             if ($stmt === false) {
                 echo "ERROR: No se pudo preparar la consulta SQL. " . mysqli_error($link);
