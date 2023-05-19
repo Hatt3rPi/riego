@@ -139,11 +139,13 @@ function agregarFilaATabla(planta) {
 }
 
 function eliminarFilaDeTabla(fila) {
-    var id = tablaPlantas.row(fila).data()[6]; // Obtiene el valor del ID de la fila
+    var idHtml = tablaPlantas.row(fila).data()[6]; // Obtiene el valor del ID de la fila
+    var id = idHtml.replace(/<[^>]*>/g, ''); // Elimina las etiquetas HTML
     $.post("./plantkeeper/plantas/modifica_plantas.php", { id: id, accion_bbdd: 'eliminacion', csrf_token: $("input[name='csrf_token']").val() }, function (response) {
-    tablaPlantas.row(fila).remove().draw();
-});
+        tablaPlantas.row(fila).remove().draw();
+    });
 }
+
 
 function recolectarDatosDelFormulario() {
     return {
