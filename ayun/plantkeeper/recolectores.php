@@ -6,7 +6,7 @@ session_start();
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <div id="buttons">
-    <button id="new-plant" class="btn btn-secondary" data-toggle="modal" data-target="#modalNuevaPlanta"><i class="fas fa-hand-holding-seedling"></i></button>
+    <button id="new-plant" class="btn btn-secondary" data-toggle="modal" data-target="#modalNuevaPlanta"><i class="fa-solid fa-leaf"></i></button>
     <button id="edit-plant" class="btn btn-secondary" disabled><i class="fas fa-pencil-alt"></i></button>
     <button id="delete-plant" class="btn btn-danger" disabled><i class="fas fa-trash"></i></button>
 </div>
