@@ -46,8 +46,23 @@ session_start();
             </div>
             <div class="form-group col-md-6">
                 <label for="ubicacion">Ubicación:</label>
-                <input type="text" class="form-control" id="ubicacion" required>
+                <select class="form-control" id="ubicacion" required>
+                    <option value="">Seleccione la ubicación</option>
+                    <option value="Oficina - repisa">Oficina - repisa</option>
+                    <option value="Oficina - colgante">Oficina - colgante</option>
+                    <option value="Living - mueble tv">Living - mueble tv</option>
+                    <option value="Living - colgante">Living - colgante</option>
+                    <option value="Living - ventanal jardín">Living - ventanal jardín</option>
+                    <option value="Living - bajo lámparas">Living - bajo lámparas</option>
+                    <option value="Living - muros">Living - muros</option>
+                    <option value="Living - ventanal patio">Living - ventanal patio</option>
+                    <option value="Living - gabinete">Living - gabinete</option>
+                    <option value="Arrimo entrada">Arrimo entrada</option>
+                    <option value="Patio">Patio</option>
+                    <option value="Jardin">Jardin</option>
+                </select>
             </div>
+
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
