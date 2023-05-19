@@ -110,7 +110,7 @@ $(document).ready(function() {
             }
         },
         {
-            targets: [5], // Índice de la columna ID en base cero
+            targets: [4], // Índice de la columna ID en base cero
             visible: false,
             searchable: false
         }
