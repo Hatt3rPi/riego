@@ -53,6 +53,7 @@ session_start();
                     <option value="Living - mueble tv">Living - mueble tv</option>
                     <option value="Living - colgante">Living - colgante</option>
                     <option value="Living - ventanal jardín">Living - ventanal jardín</option>
+                    <option value="Living - mesa de centro">Living - mesa de centro</option>
                     <option value="Living - bajo lámparas">Living - bajo lámparas</option>
                     <option value="Living - muros">Living - muros</option>
                     <option value="Living - ventanal patio">Living - ventanal patio</option>
