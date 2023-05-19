@@ -52,7 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['csrf_token']==$_SESSION['csr
             }
             break;
         case 'eliminacion':
-            $id = intval($_POST['id']);
+            
+            $id = $_POST['id'];
             $sql = "DELETE FROM plantas WHERE id = ?";
             trazabilidad($link, $_SESSION['usuario'], basename(__FILE__), 'elimina planta', $id, $sql.$id)
             $stmt = mysqli_prepare($link, $sql);
