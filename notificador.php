@@ -45,5 +45,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tipo_mensaje = $_POST['tipo'];
     $texto = $_POST['mensaje'];
 
-    enviarMensajeTelegram($telegramApiToken, $telegramChatId, $texto);
+    enviarMensajeTelegram($texto);
 }
