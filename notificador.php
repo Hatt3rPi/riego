@@ -8,7 +8,7 @@ $telegramApiToken = '6101845697:AAHTNNoqlhkAsLUAJQkkN_2vqTLuxC8Fk_4';
 $telegramChatId = '1567062024';
 
 
-function enviarMensajeTelegram($telegramApiToken, $telegramChatId, $texto)
+function enviarMensajeTelegram($texto)
 {
     $apiUrl = "https://api.telegram.org/bot{$telegramApiToken}/sendMessage";
     $params = [
