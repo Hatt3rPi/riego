@@ -68,12 +68,21 @@ function cargarRecolectores() {
 
 
 function crearOpcion(valor, etiqueta, desactivado, tachado, seleccionado) {
+    let prefijo = "";
+    if (desactivado) {
+        prefijo = "🚫 ";
+    } else if (tachado) {
+        prefijo = "⛔ ";
+    } else {
+        prefijo = "✅ ";
+    }
+    
     return '<option value="' + valor + '"' + 
            (desactivado ? ' disabled' : '') + 
-           (tachado ? ' style="text-decoration: line-through;"' : '') + 
            (seleccionado ? ' selected' : '') + 
-           '>' + etiqueta + '</option>';
+           '>' + prefijo + etiqueta + '</option>';
 }
+
 
 function cargarPines() {
     return $.getJSON("./plantkeeper/sensores/listado_pines.php", function (data) {
@@ -82,6 +91,10 @@ function cargarPines() {
 }
 function crearSelector(pinSeleccionado, tipo_sensor) {
     var selectHtml = '<select class="form-control">';
+    
+    // Opción predeterminada
+    selectHtml += '<option value=""' + (pinSeleccionado ? '' : ' selected') + '>Selecciona un PIN</option>';
+
     for (let pin of listadoPines) {
         var desactivado = pin.tipo_sensor !== tipo_sensor;
         var tachado = pin.tipo_sensor === tipo_sensor && pin.estado === "activo";
@@ -92,6 +105,7 @@ function crearSelector(pinSeleccionado, tipo_sensor) {
     selectHtml += '</select>';
     return selectHtml;
 }
+
 
 cargarPines().done(function() {
         cargarRecolectores();
