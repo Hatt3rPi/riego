@@ -2,7 +2,7 @@
 session_start();
 ?>
 <!-- Contenido de la página recolectores -->
-<h2>Lista de Recolectores</h2>
+<h2>Relaciones Planta-Pines</h2>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <table id="recolectores-table" class="table table-striped table-bordered" style="width:100%">
@@ -50,7 +50,7 @@ function agregarFilaATabla(recolector) {
     tablaRecolectores.row.add([
         '<input type="checkbox" name="id[]" value="' + recolector.id + '">',
         recolector.id,
-        recolector.nombre,
+        recolector.especie,
         recolector.ubicacion,
         crearSelector(recolector.humedad_sustrato, 'humedad_sustrato'),
         crearSelector(recolector.bomba_agua, 'bomba_agua')
@@ -59,6 +59,7 @@ function agregarFilaATabla(recolector) {
 
 function cargarRecolectores() {
     $.getJSON("./plantkeeper/sensores/relaciones_plantas.php", function (data) {
+        console.log(data)
         for (let recolector of data) {
             agregarFilaATabla(recolector);
         }
