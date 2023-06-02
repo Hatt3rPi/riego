@@ -76,7 +76,9 @@ function crearOpcion(valor, etiqueta, desactivado, tachado, seleccionado) {
     } else {
         prefijo = "✅ ";
     }
-    
+    if (seleccionado) {
+        prefijo = "👍 ";
+    }
     return '<option value="' + valor + '"' + 
            (desactivado ? ' disabled' : '') + 
            (seleccionado ? ' selected' : '') + 
