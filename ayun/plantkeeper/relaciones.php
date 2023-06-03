@@ -61,24 +61,6 @@ $('#ubicacion-search').on('change', function() {
 });
 var listadoPines;
 
-
-function agregarFilaATabla(recolector) {
-    var selectHtml = crearSelector(recolector.humedad_sustrato, 'humedad_sustrato');
-
-    // Agrega el evento "change" al selector de pines
-    selectHtml = selectHtml.replace('<select', '<select onchange="verificarPinSeleccionado(this)"');
-
-    tablaRecolectores.row.add([
-        '<input type="checkbox" name="id[]" value="' + recolector.id + '">',
-        recolector.id,
-        recolector.especie,
-        recolector.ubicacion,
-        selectHtml,
-        crearSelector(recolector.bomba_agua, 'bomba_agua')
-    ]).draw();
-}
-
-
 function verificarPinSeleccionado(selectElement) {
     var selectedPin = selectElement.value;
 
@@ -101,6 +83,22 @@ function verificarPinSeleccionado(selectElement) {
             selectElement.value = '';
         }
     }
+}
+
+function agregarFilaATabla(recolector) {
+    var selectHtml = crearSelector(recolector.humedad_sustrato, 'humedad_sustrato');
+
+    // Agrega el evento "change" al selector de pines
+    selectHtml = selectHtml.replace('<select', '<select onchange="verificarPinSeleccionado(this)"');
+
+    tablaRecolectores.row.add([
+        '<input type="checkbox" name="id[]" value="' + recolector.id + '">',
+        recolector.id,
+        recolector.especie,
+        recolector.ubicacion,
+        selectHtml,
+        crearSelector(recolector.bomba_agua, 'bomba_agua')
+    ]).draw();
 }
 
 
