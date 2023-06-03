@@ -56,6 +56,7 @@ if (!isset($_SESSION['usuario']) or !isset($_SESSION['csrf_token'])) {
                 <li><a href="plantkeeper/plantas.php" class="">Plantas</a></li>
                 <li><a href="plantkeeper/zonas.php" class="">Zonas</a></li>
                 <li><a href="plantkeeper/recolectores.php" class="">Recolectores</a></li>
+                <li><a href="plantkeeper/sensores.php" class="">Sensores</a></li>
                 <li><a href="plantkeeper/relaciones.php" class="">Relaciones</a></li>
                 <li><a href="plantkeeper/metricas.php" class="">Métricas</a></li>
             </ul>
