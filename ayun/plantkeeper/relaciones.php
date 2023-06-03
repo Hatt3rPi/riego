@@ -90,17 +90,24 @@ function agregarFilaATabla(recolector) {
     var selectHtml = crearSelector(recolector.humedad_sustrato, 'humedad_sustrato');
 
     // Agrega el evento "change" al selector de pines
-    selectHtml = selectHtml.replace('<select', '<select onchange="verificarPinSeleccionado(this)"');
+    selectHtml = $(selectHtml.replace('<select', '<select'));
+    selectHtml.on('change', function() {
+        verificarPinSeleccionado(this);
+    });
+
+    // Convierte el elemento de vuelta a una cadena de texto
+    var selectHtmlString = $('<div>').append(selectHtml.clone()).html();
 
     tablaRecolectores.row.add([
         '<input type="checkbox" name="id[]" value="' + recolector.id + '">',
         recolector.id,
         recolector.especie,
         recolector.ubicacion,
-        selectHtml,
+        selectHtmlString,
         crearSelector(recolector.bomba_agua, 'bomba_agua')
     ]).draw();
 }
+
 
 
 function cargarRecolectores() {
