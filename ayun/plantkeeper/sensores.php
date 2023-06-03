@@ -64,11 +64,6 @@ $(document).ready(function() {
             render: function (data, type, row, meta) {
                 return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
             }
-        },
-        {
-            targets: [6], // Índice de la columna ID en base cero
-            visible: false,
-            searchable: false
         }
     ],
    
@@ -103,7 +98,7 @@ function agregarFilaATabla(planta) {
 }
 
 function eliminarFilaDeTabla(fila) {
-    var idHtml = tablaPlantas.row(fila).data()[6]; // Obtiene el valor del ID de la fila
+    var idHtml = tablaPlantas.row(fila).data()[2]; // Obtiene el valor del ID de la fila
     var id = idHtml.replace(/<[^>]*>/g, ''); // Elimina las etiquetas HTML
     $.post("./plantkeeper/sensores/modifica_sensores.php", { id: id, accion_bbdd: 'eliminacion', csrf_token: $("input[name='csrf_token']").val() }, function (response) {
         tablaPlantas.row(fila).remove().draw();
