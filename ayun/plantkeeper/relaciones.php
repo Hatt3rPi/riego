@@ -60,25 +60,61 @@ $('#ubicacion-search').on('change', function() {
     tablaRecolectores.column(3).search(this.value).draw();
 });
 var listadoPines;
+
+
 function agregarFilaATabla(recolector) {
+    var selectHtml = crearSelector(recolector.humedad_sustrato, 'humedad_sustrato');
+
+    // Agrega el evento "change" al selector de pines
+    selectHtml = selectHtml.replace('<select', '<select onchange="verificarPinSeleccionado(this)"');
+
     tablaRecolectores.row.add([
         '<input type="checkbox" name="id[]" value="' + recolector.id + '">',
         recolector.id,
         recolector.especie,
         recolector.ubicacion,
-        crearSelector(recolector.humedad_sustrato, 'humedad_sustrato'),
+        selectHtml,
         crearSelector(recolector.bomba_agua, 'bomba_agua')
     ]).draw();
 }
 
+
+function verificarPinSeleccionado(selectElement) {
+    var selectedPin = selectElement.value;
+
+    // Verificar si el pin seleccionado ya está seleccionado por otra planta
+    var pinSeleccionadoPorOtraPlanta = false;
+    tablaRecolectores.column(4).nodes().each(function(cell, index) {
+        if (cell.querySelector('select').value === selectedPin) {
+            var rowData = tablaRecolectores.row(index).data();
+            if (rowData[1] !== selectedPin) {
+                pinSeleccionadoPorOtraPlanta = true;
+                return false; // Salir del bucle
+            }
+        }
+    });
+
+    if (pinSeleccionadoPorOtraPlanta) {
+        // Mostrar advertencia y solicitar confirmación
+        if (!confirm('Este pin ya está seleccionado por otra planta. ¿Deseas continuar?')) {
+            // Revertir la selección del pin
+            selectElement.value = '';
+        }
+    }
+}
+
+
 function cargarRecolectores() {
     $.getJSON("./plantkeeper/sensores/relaciones_plantas.php", function (data) {
-        console.log(data)
+        //console.log(data);
+        tablaRecolectores.clear().draw(); // Limpiar la tabla antes de agregar las filas
+
         for (let recolector of data) {
             agregarFilaATabla(recolector);
         }
     });
 }
+
 
 
 function crearOpcion(valor, etiqueta, desactivado, tachado, seleccionado) {
