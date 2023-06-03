@@ -9,11 +9,11 @@ session_start();
     <thead>
         <tr>
             <th></th> <!-- Columna de checkbox -->
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Ubicación</th>
-            <th>Sensor Humedad</th>
-            <th>Bomba Agua</th>
+            <th>id</th>
+            <th>nombre</th>
+            <th>ubicacion</th>
+            <th>sensor_humedad</th>
+            <th>bomba_agua</th>
         </tr>
     </thead>
     <tbody>
@@ -21,6 +21,7 @@ session_start();
 </table>
 <script>
 $(document).ready(function() {
+
     var tablaRecolectores = $("#recolectores-table").DataTable({
     columnDefs: [
         {
@@ -59,7 +60,6 @@ $('#ubicacion-search').on('change', function() {
     tablaRecolectores.column(3).search(this.value).draw();
 });
 var listadoPines;
-var pinesAsignados = {};
 
 function agregarFilaATabla(recolector) {
     tablaRecolectores.row.add([
@@ -67,17 +67,9 @@ function agregarFilaATabla(recolector) {
         recolector.id,
         recolector.especie,
         recolector.ubicacion,
-        crearSelector(recolector.id, recolector.humedad_sustrato, 'humedad_sustrato'),
-        crearSelector(recolector.id, recolector.bomba_agua, 'bomba_agua')
+        crearSelector(recolector.humedad_sustrato, 'humedad_sustrato', recolector.id),
+        crearSelector(recolector.bomba_agua, 'bomba_agua', recolector.id)
     ]).draw();
-
-    // Si el pin está seleccionado, añádelo a pinesAsignados
-    if (recolector.humedad_sustrato) {
-        pinesAsignados[recolector.humedad_sustrato] = recolector.id;
-    }
-    if (recolector.bomba_agua) {
-        pinesAsignados[recolector.bomba_agua] = recolector.id;
-    }
 }
 
 function cargarRecolectores() {
@@ -114,12 +106,8 @@ function cargarPines() {
         listadoPines = data;
     });
 }
-
-// Variable para guardar la asignación de pines a las plantas
-var pinesAsignados = {};
-
-function crearSelector(recolectorId, pinSeleccionado, tipo_sensor) {
-    var selectHtml = '<select class="form-control" data-recolector-id="' + recolectorId + '">';
+function crearSelector(pinSeleccionado, tipo_sensor, recolectorId) {
+    var selectHtml = '<select class="form-control pin-select" data-recolector-id="' + recolectorId + '" data-previous-pin="' + pinSeleccionado + '">';
 
     // Opción predeterminada
     selectHtml += '<option value=""' + (pinSeleccionado ? '' : ' selected') + '>Selecciona un PIN</option>';
@@ -132,35 +120,41 @@ function crearSelector(recolectorId, pinSeleccionado, tipo_sensor) {
         selectHtml += crearOpcion(pin.pin, pin.pin, desactivado, tachado, seleccionado);
     }
     selectHtml += '</select>';
-
-    // Si el pin está seleccionado, añádelo a pinesAsignados
-    if (pinSeleccionado) {
-        pinesAsignados[pinSeleccionado] = recolectorId;
-    }
-
     return selectHtml;
 }
 
-    // Evento de cambio en los selectores de pin
-    $(document).on('change', 'select.form-control', function() {
+
+cargarPines().done(function() {
+    cargarRecolectores();
+}).then(function() {
+    // Cuando se selecciona un nuevo pin en un select
+    $(".pin-select").on('change', function() {
+        var nuevoPinSeleccionado = $(this).val();
         var recolectorId = $(this).data('recolector-id');
-        var pinSeleccionado = $(this).val();
+        var previousPin = $(this).data('previous-pin');
 
-        // ... Resto del código original ...
+        // Busca si ya hay otro select con este pin seleccionado
+        var otroSelect = $(".pin-select").not(this).filter(function() {
+            return $(this).val() === nuevoPinSeleccionado;
+        });
 
-        // Actualizar pinesAsignados con la nueva asignación
-        for (var pin in pinesAsignados) {
-            if (pinesAsignados[pin] === recolectorId) {
-                delete pinesAsignados[pin];
+        // Si hay otro select con este pin seleccionado
+        if (otroSelect.length > 0) {
+            // Confirmación del usuario
+            var confirmar = confirm('El PIN seleccionado ya está siendo usado por otra planta. ¿Deseas continuar?');
+
+            if (confirmar) {
+                // Si el usuario confirma, establecer el valor del select de la planta anterior a vacío
+                otroSelect.val("");
+            } else {
+                // Si el usuario no confirma, revertir el select a su valor anterior
+                $(this).val(previousPin);
             }
         }
-        if (pinSeleccionado) {
-            pinesAsignados[pinSeleccionado] = recolectorId;
-        }
-    });
 
-    cargarPines().done(function() {
-        cargarRecolectores();
+        // Actualiza el previous pin
+        $(this).data('previous-pin', nuevoPinSeleccionado);
     });
 });
+
 </script>
