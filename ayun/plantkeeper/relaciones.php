@@ -60,15 +60,14 @@ $('#ubicacion-search').on('change', function() {
     tablaRecolectores.column(3).search(this.value).draw();
 });
 var listadoPines;
-
 function agregarFilaATabla(recolector) {
     tablaRecolectores.row.add([
         '<input type="checkbox" name="id[]" value="' + recolector.id + '">',
         recolector.id,
         recolector.especie,
         recolector.ubicacion,
-        crearSelector(recolector.humedad_sustrato, 'humedad_sustrato', recolector.id),
-        crearSelector(recolector.bomba_agua, 'bomba_agua', recolector.id)
+        crearSelector(recolector.humedad_sustrato, 'humedad_sustrato'),
+        crearSelector(recolector.bomba_agua, 'bomba_agua')
     ]).draw();
 }
 
@@ -106,9 +105,9 @@ function cargarPines() {
         listadoPines = data;
     });
 }
-function crearSelector(pinSeleccionado, tipo_sensor, recolectorId) {
-    var selectHtml = '<select class="form-control pin-select" data-recolector-id="' + recolectorId + '" data-previous-pin="' + pinSeleccionado + '">';
-
+function crearSelector(pinSeleccionado, tipo_sensor) {
+    var selectHtml = '<select class="form-control">';
+    
     // Opción predeterminada
     selectHtml += '<option value=""' + (pinSeleccionado ? '' : ' selected') + '>Selecciona un PIN</option>';
 
@@ -125,36 +124,9 @@ function crearSelector(pinSeleccionado, tipo_sensor, recolectorId) {
 
 
 cargarPines().done(function() {
-    cargarRecolectores();
-}).then(function() {
-    // Cuando se selecciona un nuevo pin en un select
-    $(".pin-select").on('change', function() {
-        var nuevoPinSeleccionado = $(this).val();
-        var recolectorId = $(this).data('recolector-id');
-        var previousPin = $(this).data('previous-pin');
-
-        // Busca si ya hay otro select con este pin seleccionado
-        var otroSelect = $(".pin-select").not(this).filter(function() {
-            return $(this).val() === nuevoPinSeleccionado;
-        });
-
-        // Si hay otro select con este pin seleccionado
-        if (otroSelect.length > 0) {
-            // Confirmación del usuario
-            var confirmar = confirm('El PIN seleccionado ya está siendo usado por otra planta. ¿Deseas continuar?');
-
-            if (confirmar) {
-                // Si el usuario confirma, establecer el valor del select de la planta anterior a vacío
-                otroSelect.val("");
-            } else {
-                // Si el usuario no confirma, revertir el select a su valor anterior
-                $(this).val(previousPin);
-            }
-        }
-
-        // Actualiza el previous pin
-        $(this).data('previous-pin', nuevoPinSeleccionado);
+        cargarRecolectores();
     });
+
 });
 
 </script>
