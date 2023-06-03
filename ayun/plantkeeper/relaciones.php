@@ -46,19 +46,19 @@ $(document).ready(function() {
     }
 });
     // Obtiene todas las posibles ubicaciones (asumiendo que son las ubicaciones existentes en la tabla)
-    var ubicaciones = [];
-    tablaRecolectores.column(3).data().unique().sort().each(function(d, j) {
-        ubicaciones.push('<option value="' + d + '">' + d + '</option>');
-    });
+var ubicaciones = [];
+tablaRecolectores.column(3).data().unique().sort().each(function(d, j) {
+    ubicaciones.push('<option value="' + d + '">' + d + '</option>');
+});
 
-    // Añade el select al HTML
-    $('#recolectores-table_wrapper').prepend('<div id="ubicacion-filter">Ubicacion: <select id="ubicacion-search"><option value="">Todas las ubicaciones</option>' + ubicaciones.join('') + '</select></div>');
+// Añade el select al HTML
+$('#recolectores-table_wrapper').prepend('<div id="ubicacion-filter">Ubicacion: <select id="ubicacion-search"><option value="">Todas las ubicaciones</option>' + ubicaciones.join('') + '</select></div>');
 
-    // Agrega el evento 'change' al select
-    $('#ubicacion-search').on('change', function() {
-        // Busca en la 4ta columna (0-indexada, por lo tanto "3" para la columna "ubicacion")
-        tablaRecolectores.column(3).search(this.value).draw();
-    });
+// Agrega el evento 'change' al select
+$('#ubicacion-search').on('change', function() {
+    // Busca en la 4ta columna (0-indexada, por lo tanto "3" para la columna "ubicacion")
+    tablaRecolectores.column(3).search(this.value).draw();
+});
 var listadoPines;
 function agregarFilaATabla(recolector) {
     tablaRecolectores.row.add([
