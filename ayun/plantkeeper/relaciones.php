@@ -9,11 +9,11 @@ session_start();
     <thead>
         <tr>
             <th></th> <!-- Columna de checkbox -->
-            <th>id</th>
-            <th>nombre</th>
-            <th>ubicacion</th>
-            <th>sensor_humedad</th>
-            <th>bomba_agua</th>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Ubicación</th>
+            <th>Sensor Humedad</th>
+            <th>Bomba Agua</th>
         </tr>
     </thead>
     <tbody>
@@ -22,6 +22,29 @@ session_start();
 <script>
 $(document).ready(function() {
 
+    function verificarPinSeleccionado(selectElement) {
+    var selectedPin = selectElement.value;
+
+    // Verificar si el pin seleccionado ya está seleccionado por otra planta
+    var pinSeleccionadoPorOtraPlanta = false;
+    tablaRecolectores.column(4).nodes().each(function(cell, index) {
+        if (cell.querySelector('select').value === selectedPin) {
+            var rowData = tablaRecolectores.row(index).data();
+            if (rowData[1] !== selectedPin) {
+                pinSeleccionadoPorOtraPlanta = true;
+                return false; // Salir del bucle
+            }
+        }
+    });
+
+    if (pinSeleccionadoPorOtraPlanta) {
+        // Mostrar advertencia y solicitar confirmación
+        if (!confirm('Este pin ya está seleccionado por otra planta. ¿Deseas continuar?')) {
+            // Revertir la selección del pin
+            selectElement.value = '';
+        }
+    }
+}
     var tablaRecolectores = $("#recolectores-table").DataTable({
     columnDefs: [
         {
@@ -61,29 +84,7 @@ $('#ubicacion-search').on('change', function() {
 });
 var listadoPines;
 
-function verificarPinSeleccionado(selectElement) {
-    var selectedPin = selectElement.value;
 
-    // Verificar si el pin seleccionado ya está seleccionado por otra planta
-    var pinSeleccionadoPorOtraPlanta = false;
-    tablaRecolectores.column(4).nodes().each(function(cell, index) {
-        if (cell.querySelector('select').value === selectedPin) {
-            var rowData = tablaRecolectores.row(index).data();
-            if (rowData[1] !== selectedPin) {
-                pinSeleccionadoPorOtraPlanta = true;
-                return false; // Salir del bucle
-            }
-        }
-    });
-
-    if (pinSeleccionadoPorOtraPlanta) {
-        // Mostrar advertencia y solicitar confirmación
-        if (!confirm('Este pin ya está seleccionado por otra planta. ¿Deseas continuar?')) {
-            // Revertir la selección del pin
-            selectElement.value = '';
-        }
-    }
-}
 
 function agregarFilaATabla(recolector) {
     var selectHtml = crearSelector(recolector.humedad_sustrato, 'humedad_sustrato');
