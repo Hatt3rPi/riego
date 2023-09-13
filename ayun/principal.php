@@ -1,7 +1,7 @@
 <?php
 $url = "https://www.gestionipn.cl/ayun/data_mediciones_plantas.php";
 $token = "=goaWJ/d7r=obtd1d=kYlYi17ShkdVwsBn0ooG3DdiyhhQLqwpbWUvbGpcnVe5Ds";
-$fecha_desde = date("Y-m-d H:i:s", strtotime("-30 days"));  // Últimos 30 días
+$fecha_desde = date("Y-m-d H:i:s", strtotime("-120 days"));  // Últimos 30 días
 
 $data = array('fecha_desde' => $fecha_desde, 'token' => $token);
 
